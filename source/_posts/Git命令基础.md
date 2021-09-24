@@ -12,7 +12,10 @@ title: Git命令基础
 分支合并: git merge 分支名 (把分支合并到当前分支)
 ```
 
+创建分支后，由于新建立的分支还未在git上，所以push的时候，需要用命令：git push --set-upstream origin hexo
+
 ### 删除分支
+
 ```text
 首先使用git branch -a查看当前所有分支。
 删除本地分支：git branch -d 分支1[,分支名2,分支名3...]
