@@ -34,5 +34,5 @@ title: Git命令基础
 查看缓存列表:git stash list
 ```
 
-
-
+## fetch和pull区别与原理
+&emsp; git分为本地仓库和远程仓库，我们一般情况都是写完代码，commit到本地仓库（生成本地仓的commit ID，代表当前提交代码的版本号），然后push到远程仓库（记录这个版本号）。
