@@ -15,7 +15,7 @@ menu:
    首页: / || fas fa-home
    时间轴: /archives/ || fas fa-archive
    标签: /tags/ || fas fa-tags
-   分裂: /categories/ || fas fa-folder-open
+   分类: /categories/ || fas fa-folder-open
    清单||fas fa-list:
      音乐: /music/ || fas fa-music
      电影: /movies/ || fas fa-video
@@ -144,7 +144,7 @@ error_404:
 
 post_meta:
   page: # Home Page
-    date_type: created # created or updated or both 主頁文章日期是創建日或者更新日或都顯示
+    date_type: both # created or updated or both 主頁文章日期是創建日或者更新日或都顯示
     date_format: date # date/relative 顯示日期還是相對日期
     categories: true # true or false 主頁是否顯示分類
     tags: false # true or false 主頁是否顯示標籤
@@ -175,7 +175,7 @@ index_post_content:
 # Post
 # --------------------------------------
 
-# toc (目錄)
+# toc (目录)
 toc:
   post: true
   page: false
