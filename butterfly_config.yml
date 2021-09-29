@@ -14,12 +14,12 @@ menu:
   # About: /about/ || fas fa-heart
    首页: / || fas fa-home
    时间轴: /archives/ || fas fa-archive
-   标签: /tags/ || fas fa-tags
+   #标签: /tags/ || fas fa-tags
    分类: /categories/ || fas fa-folder-open
-   清单||fas fa-list:
-     音乐: /music/ || fas fa-music
-     电影: /movies/ || fas fa-video
-   友链: /link/ || fas fa-link
+   #清单||fas fa-list:
+   #  音乐: /music/ || fas fa-music
+   #  电影: /movies/ || fas fa-video
+   #友链: /link/ || fas fa-link
    关于: /about/ || fas fa-heart
    
 # Code Blocks (代碼相關)
@@ -89,11 +89,11 @@ avatar:
   img: https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png
   effect: false
 
-# Disable all banner image
-disable_top_img: false
+# Disable all banner image  顶部横幅
+disable_top_img: true
 
 # The banner image of home page 设置顶部背景图片
-index_img: 'linear-gradient(20deg, #0062be, #925696, #cc426e, #fb0347)'
+index_img: 'linear-gradient(20deg, #0062be, #925696, #cc426e, #fb0347)' #横幅渐变
 
 # If the banner of page not setting, it will show the top_img
 default_top_img:
@@ -169,7 +169,7 @@ wordcount:
 # 3: auto_excerpt (default)
 # false: do not show the article introduction
 index_post_content:
-  method: 3
+  method: 1
   length: 500 # if you set method to 2 or 3, the length need to config
 
 # Post
@@ -628,7 +628,7 @@ aside:
       text: Follow Me
       link: https://github.com/xxxxxx
   card_announcement:
-    enable: true
+    enable: false
     content: This is my Blog
   card_recent_post:
     enable: true
@@ -818,6 +818,7 @@ css_prefix: true
 inject:
   head:
     # - <link rel="stylesheet" href="/xxx.css">
+    - <link rel="stylesheet" href="/OverCookkk/css/background.css">
   bottom:
     # - <script src="xxxx"></script>
 
