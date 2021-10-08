@@ -3,10 +3,10 @@ title: C++标准库锁的使用
 #tags: [hexo建站,hexo部署,github部署,个人博客]      #添加的标签
 categories: C++基础知识                           #添加的分类
 description: C++11中锁的浅谈笔记
-cover: https://raw.githubusercontent.com/OverCookkk/PicBed/master/blogImg/lock.jpg
+cover: https://gitee.com/hu-zhihong/picbed/raw/master/lock.jpg
 ---
 
-​		C++11中，std::unique_lock, std::lock_guard, std::recursive_mutex可以简单理解为对std::mutex的封装，且对互斥量的unlock是在对象（比如std::unique_lock对象）销毁时执行。
+​		C++11中，std::unique_lock, std::lock_guard, std::recursive_mutex可以简单理解为对std::mutex的封装，且对互斥量的unlock是在对象（比如std::unique_lock对象)销毁时执行。
 
 （1）区域锁lock_guard使用起来比较简单，除了构造函数外没有其他member function，在整个区域都有效。
 
