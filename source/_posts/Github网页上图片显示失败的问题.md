@@ -10,7 +10,7 @@ description:
 
 
 
-## 一、问题
+## 问题
 
 比如在github上打开一个项目，项目里的图片无法查看，导致在博客显示的图片也显示不了，点击**F12**打开控制台查看
 
@@ -20,15 +20,15 @@ description:
 
 
 
-## 二、解决方法
+## 解决方法
 
 主要思路就是使用本地`hosts`文件对网站进行域名解析，一般的`DNS`问题都可以通过修改`hosts`文件来解决，
 
-### 2.1 找到URL
+### 找到URL
 
 通过网页的控制台，看到图片对应的URL为`https://raw.githubusercontent.com/OverCookkk/PicBed/master/blogImg/git%20img1.png`
 
-### 2.2 获取IP地址
+###  获取IP地址
 
 得到上述网址以后打开[IPAddress.com](https://www.ipaddress.com/)这个网站，在搜索框输入它的域名，就是`https://`到`com`那一部分，俗称二级域名：
 
@@ -42,7 +42,7 @@ raw.githubusercontent.com
 
 图片中可以看到，这个域名对应了四个IP地址。
 
-### 2.3 修改hosts
+### 修改hosts
 
 windows系统打开：`C:\Windows\System32\drivers\etc\hosts`文件，在文件中追加
 

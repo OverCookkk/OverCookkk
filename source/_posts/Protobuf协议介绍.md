@@ -2,10 +2,10 @@
 title: Protobuf协议介绍
 ---
 
-## 一、Protobuf简介
+## Protobuf简介
 protobuf(Google Protocol Buffers)是Google提供一个具有高效的数据传输的协议，可以用于结构化数据序列化，支持 Java、Python、C++、Go 等语言。
 
-## 二、Protobuf消息定义
+## Protobuf消息定义
 关键字message: 代表了实体结构，由多个消息字段(field)组成。
 消息字段(field): 包括数据类型、字段名、字段规则、字段唯一标识、默认值
 数据类型：常见的原子类型都支持(在FieldDescriptor::kTypeToName中有定义)
@@ -31,7 +31,7 @@ message BookBehaviorPb
 }
 ```
 
-## 三、Protobuf
+## Protobuf
 Xml、Json是目前常用的数据交换格式，它们直接使用字段名称维护序列化后类实例中字段与数据之间的映射关系，一般用字符串的形式保存在序列化后的字节流中。消息和消息的定义相对独立，可读性较好。但序列化后的数据字节很大，序列化和反序列化的时间较长，数据传输效率不高。
 	相对于 JDK、JSON，由于 Hessian 更加高效，生成的字节数更小，有非常好的兼容性和稳定性，所以 Hessian 更加适合作为 RPC 框架远程通信的序列化协议。
 	Protobuf和Xml、Json序列化的方式不同，采用了二进制字节的序列化方式，用字段索引和字段类型通过算法计算得到字段之前的关系映射，从而达到更高的时间效率和空间效率，特别适合对数据大小和传输速率比较敏感的场合使用
