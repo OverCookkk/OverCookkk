@@ -3,7 +3,7 @@ title: pimpl 惯用法
 #tags: [hexo建站,hexo部署,github部署,个人博客]      #添加的标签
 categories: 
   - 代码技巧
-description: 
+description: Pimpl是“pointer to implementation”的缩写， 该技巧可以避免在头文件中暴露私有细节。
 #cover: 
 ---
 
