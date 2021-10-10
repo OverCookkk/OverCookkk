@@ -1,7 +1,7 @@
 ---
 title: C++标准库锁的使用
 #tags: [hexo建站,hexo部署,github部署,个人博客]      #添加的标签
-categories: C++基础知识                           #添加的分类
+categories: C++                           #添加的分类
 description: C++11中锁的浅谈笔记
 cover: https://gitee.com/hu-zhihong/picbed/raw/master/lock.jpg
 ---
