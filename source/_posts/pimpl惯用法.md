@@ -52,7 +52,7 @@ private:
 };
 ```
 
-**CSocketClient** 类的 **public** 方法提供对外接口供第三方使用，每个函数的具体实现在 **SocketClient.cpp** 中，对第三方使用者不可见。在 Windows 系统上作为提供给第三方使用的库，一般需要提供给使用者 **.h**、**.lib**和 **.dll** 文件，在 Linux 系统上需要提供 **.h**、**.a** 或**.so** 文件。
+**CSocketClient** 类的 **public** 方法提供对外接口供第三方使用，每个函数的具体实现在 **SocketClient.cpp** 中，对第三方使用者不可见。在 Windows 系统上作为提供给第三方使用的库，一般需要提供给使用者 .h、.lib和 .dll文件，在 Linux 系统上需要提供 .h、.a 或 .so文件。
 
 
 
