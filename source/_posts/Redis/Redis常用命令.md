@@ -171,7 +171,7 @@ Redis会根据当前值的类型和长度决定使用哪种内部编码实现。
 
 ## 哈希
 
-在Redis中，哈希类型是指键值本身又是一个键值对结构，形如value={{field1，value1}，...{fieldN， valueN}}，Redis键值对和哈希类型二者的关系如下图：
+在Redis中，哈希类型是指键值本身又是一个键值对结构，形如`value={{field1，value1}，...{fieldN， valueN}}`，Redis键值对和哈希类型二者的关系如下图：
 
 ![redis哈希类型关系](https://gitee.com/hu-zhihong/picbed/raw/master/redis%E5%93%88%E5%B8%8C%E7%B1%BB%E5%9E%8B%E5%85%B3%E7%B3%BB.png)
 
