@@ -90,10 +90,10 @@ avatar:
   effect: false
 
 # Disable all banner image  顶部横幅
-disable_top_img: true
+disable_top_img: false
 
 # The banner image of home page 设置顶部背景图片
-index_img: 'linear-gradient(20deg, #0062be, #925696, #cc426e, #fb0347)' #横幅渐变
+index_img: https://gitee.com/hu-zhihong/picbed/raw/master/blog_background.jpg #'linear-gradient(20deg, #0062be, #925696, #cc426e, #fb0347)' #横幅渐变
 
 # If the banner of page not setting, it will show the top_img
 default_top_img:
