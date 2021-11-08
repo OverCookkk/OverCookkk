@@ -1,8 +1,8 @@
 ---
 title: http与https
-#tags: [hexo建站,hexo部署,github部署,个人博客]      #添加的标签
+#tags: [http,https]      #添加的标签
 categories: 
-  - 后端
+  - 计算机网络
   #- http
 description: http与https的区别与原理
 #cover: 

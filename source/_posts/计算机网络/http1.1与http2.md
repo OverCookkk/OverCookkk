@@ -1,8 +1,8 @@
 ---
 title: http1.1与http2
-#tags: [hexo建站,hexo部署,github部署,个人博客]      #添加的标签
+#tags: [http]      #添加的标签
 categories: 
-  - 后端
+  - 计算机网络
   #- http
 description: http/1.1与http/2的区别与原理
 #cover: 
