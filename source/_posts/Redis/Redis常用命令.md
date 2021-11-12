@@ -476,4 +476,4 @@ Redis会根据当前值的类型和长度决定使用哪种内部编码实现。
 ### 内部编码
 
 - ziplist（压缩列表）：当列表的元素个数小于list-max-ziplist-entries配置（默认512个），同时列表中每个元素的值都小于list-max-ziplist-value配置时（默认64字节），Redis会选用ziplist来作为列表的 内部实现来减少内存的使用。
-- linkedlist（链表）：当列表类型无法满足ziplist的条件时， Redis会使用linkedlist作为列表的内部实现。
+- linkedlist（双端链表）：当列表类型无法满足ziplist的条件时， Redis会使用linkedlist作为列表的内部实现。
