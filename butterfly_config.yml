@@ -14,7 +14,7 @@ menu:
   # About: /about/ || fas fa-heart
    首页: / || fas fa-home
    时间轴: /archives/ || fas fa-archive
-   #标签: /tags/ || fas fa-tags
+   标签: /tags/ || fas fa-tags
    分类: /categories/ || fas fa-folder-open
    #清单||fas fa-list:
    #  音乐: /music/ || fas fa-music
