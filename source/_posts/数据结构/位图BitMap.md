@@ -1,0 +1,67 @@
+---
+title: 位图BitMap
+tags: [BitMap]      #添加的标签
+categories: 数据结构
+description: 
+#cover: 
+---
+
+
+
+## 场景
+
+给40亿个不重复的无符号整数，没排过序。给一个无符号整数，如何快速判断一个数是否在这40亿个数中。
+
+
+
+## 位图BitMap
+
+位图BitMap：位图是一个**数组**的**每一个数据**的**每一个二进制位**表示一个数据，0表示数据不存在，1表示数据存在。
+
+![BitMap示意图](https://gitee.com/hu-zhihong/picbed/raw/master/BitMap%E7%A4%BA%E6%84%8F%E5%9B%BE.png)
+
+图中，第一行数值表示一个uint类型（4个字节），136存放在第四个uint类型里，并在该uint类型的第25bit位置上。
+
+BitMap实现代码如下：
+
+```c++
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class BitMap
+{
+public:
+    BitMap(size_t range)
+    {
+        //此时多开辟一个空间
+        _bits.resize(range >> 5 + 1);	//range >> 5等价于range / 32
+    }
+    void Set(size_t x)
+    {
+        int index = x / 32;//确定哪个数据（区间）
+        int temp = x % 32;//确定哪个Bit位		x&7==x%8.该Byte里第几个 
+        _bits[index] |= (1 << temp);//位操作即可
+    }
+    void Reset(size_t x)
+    {
+        int index = x / 32;
+        int temp = x % 32;
+        _bits[index] &= ~(1 << temp);//取反
+    }
+    bool Get(size_t x)
+    {
+        int index = x / 32;
+        int temp = x % 32;
+        if (_bits[index]&(1<<temp))
+            return 1;
+        else
+            return 0;
+    }
+
+private:
+    vector<int> _bits;	//有(n/32)个int，每个int有32个bit位置
+    //此外也可以使用char* _bits; int gsize; 此时有(n/8)个char，每个char有8个bit位置
+};
+```
+
