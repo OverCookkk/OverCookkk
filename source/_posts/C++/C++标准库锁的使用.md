@@ -14,7 +14,7 @@ cover: https://gitee.com/hu-zhihong/picbed/raw/master/lock.jpg
 用法：std::lock_guard<std::mutex>或std::lock_guard<std::recursice_mutex>
 ```
 
-（2）区域锁unique_lock除了lock_guard的功能外，提供了更多的member_function，相对来说更灵活一些。unique_lock的最有用的一组函数为：lock()、try_lock()、try_lock_for()、try_lock_until()、unlock()。
+（2）区域锁unique_lock**除了lock_guard的功能外**，提供了更多的member_function，相对来说更灵活一些。unique_lock的最有用的一组函数为：lock()、try_lock()、try_lock_for()、try_lock_until()、unlock()。
 
 ```c++
 std::unique_lock<std::mutex>或std::unique_lock<std::recursice_mutex>
