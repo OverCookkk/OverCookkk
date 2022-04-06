@@ -18,19 +18,37 @@ description:
 
 使用`show index from 表名;`命令可以查看索引详情。
 
-1. 主键索引primary key：它是一种特殊的唯一索引，不允许有空值。一般是在建表的时候同时创建主键索引。注意：一个表只能有一个主键。
+1. 主键索引primary key：它是一种特殊的唯一索引，不允许有空值。一般是在建表的时候使用语句`PRIMARY KEY (id) `同时创建主键索引。注意：一个表只能有一个主键。
+
+   ```mysql
+   CREATE TABLE `phpcolor_ad` (  
+   `id` mediumint(8) NOT NULL AUTO_INCREMENT,  
+   `name` varchar(30) NOT NULL,
+   PRIMARY KEY (`id`),  
+   );
+   ```
 
 ![MySql主键索引](https://gitee.com/hu-zhihong/picbed/raw/master/MySql%E4%B8%BB%E9%94%AE%E7%B4%A2%E5%BC%95.png)
 
+2. 唯一索引 UNIQUE：唯一索引列的值必须唯一，但允许有空值。如果是组合索引，则列值的组合必须唯一（每个表可以有多个 UNIQUE 约束，但是每个表只能有一个 PRIMARY KEY 约束）。可以通过`ALTER TABLE 表名 ADD UNIQUE (列名);`创建唯一索引；可以通过`ALTER TABLE 表名 ADD UNIQUE (列名1,列名2);`；也可以在创建表的时候使用语句`KEY type (type)`创建索引。
 
+   ```mysql
+   CREATE TABLE `phpcolor_ad` (  
+   `id` mediumint(8) NOT NULL AUTO_INCREMENT,  
+   `name` varchar(30) NOT NULL,  
+   `type` mediumint(1) NOT NULL,  
+   PRIMARY KEY (`id`),  
+   KEY `type` (`type`)  
+   );
+   ```
 
-2. 唯一索引 UNIQUE：唯一索引列的值必须唯一，但允许有空值。如果是组合索引，则列值的组合必须唯一。可以通过`ALTER TABLE 表名 ADD UNIQUE (列名);`创建唯一索引。可以通过`ALTER TABLE 表名 ADD UNIQUE (列名1,列名2);`创建唯一组合索引：
+创建组合索引结果如下：
 
 ![MySql唯一索引](https://gitee.com/hu-zhihong/picbed/raw/master/MySql%E5%94%AF%E4%B8%80%E7%B4%A2%E5%BC%95.png)
 
 
 
-3. 普通索引 INDEX：这是最基本的索引，它没有任何限制。可以通过`ALTER TABLE 表名 ADD INDEX index_name (列名);`创建普通索引：
+3. 普通索引 INDEX：这是最基本的索引，它没有任何限制。**注意，如果索引是用B+树结构，则B+树的每个叶子节点都是主键值，因为这样可以节省存储空间以及保证一致性**。可以通过`ALTER TABLE 表名 ADD INDEX index_name (列名);`创建普通索引：
 
 ![MySql普通索引](https://gitee.com/hu-zhihong/picbed/raw/master/MySql%E6%99%AE%E9%80%9A%E7%B4%A2%E5%BC%95.png)
 
@@ -80,7 +98,7 @@ DROP INDEX index_name ON table_name;删除索引。
 假设name,age,status列创建了复合索引，根据最左原则，可以命中复合索引index_name：
 `SELECT * FROM user WHERE name='swj' AND status=1;`。
 
-注意，最左原则并不是说是查询条件的顺序，而是查询条件中是否包含索引最左列字段（如此例子中索引最左列字段是name）。
+**注意，最左原则并不是说是查询条件的顺序，而是查询条件中是否包含索引最左列字段（如此例子中索引最左列字段是name）。**
 
 4）union、in、or都能够命中索引，建议使用in，查询的CPU消耗：or>in>union。
 
