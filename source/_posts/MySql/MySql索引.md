@@ -48,15 +48,19 @@ description:
 
 
 
-3. 普通索引 INDEX：这是最基本的索引，它没有任何限制。**注意，如果索引是用B+树结构，则B+树的每个叶子节点都是主键值，因为这样可以节省存储空间以及保证一致性**。可以通过`ALTER TABLE 表名 ADD INDEX index_name (列名);`创建普通索引：
+3. 普通索引 INDEX：这是最基本的索引，它没有任何限制，它与唯一索引在查询能力上是没差别的，主要考虑的是对更新性能的影响。**注意，如果索引是用B+树结构，则B+树的每个叶子节点都是主键值，因为这样可以节省存储空间以及保证一致性**。可以通过`ALTER TABLE 表名 ADD INDEX index_name (列名);`创建普通索引：
 
 ![MySql普通索引](https://gitee.com/hu-zhihong/picbed/raw/master/MySql%E6%99%AE%E9%80%9A%E7%B4%A2%E5%BC%95.png)
 
 
 
-4. 组合索引 INDEX：即一个索引包含多个列，多用于避免回表查询。可以通过`ALTER TABLE 表名 ADD INDEX index_name(column1,column2,column3);`创建组合索引：
+4. 组合索引 INDEX：即一个索引包含多个列，多用于避免回表查询。可以通过`ALTER TABLE 表名 ADD INDEX index_name(column1,column2,column3);`创建组合索引，它可以支持最左前缀原则，所以联合索引需要合理安排字段的前后顺序。
 
-5. 全文索引 FULLTEXT：也称全文检索，是目前搜索引擎使用的一种关键技术。可以通过`ALTER TABLE 表名 ADD FULLTEXT (列名);`创建全文索引：
+   ![（name，age）索引示意图](https://gitee.com/hu-zhihong/picbed/raw/master/%EF%BC%88name%EF%BC%8Cage%EF%BC%89%E7%B4%A2%E5%BC%95%E7%A4%BA%E6%84%8F%E5%9B%BE.png)
+
+   
+
+5. 全文索引 FULLTEXT：也称全文检索，是目前搜索引擎使用的一种关键技术。可以通过`ALTER TABLE 表名 ADD FULLTEXT (列名);`创建全文索引。
 
 
 
