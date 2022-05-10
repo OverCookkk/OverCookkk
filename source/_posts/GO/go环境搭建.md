@@ -32,6 +32,8 @@ git clone https://github.com/golang/sys.git $GOPATH/src/golang.org/x/sys
 git clone https://github.com/google/go-genproto.git $GOPATH/src/google.golang.org/genproto
 # 下载go-protobuf
 git clone https://github.com/protocolbuffers/protobuf-go.git  $GOPATH/src/google.golang.org/protobuf
+
+# 下载完以上的内容后，还需下载下面说的Go Plugins（protoc-gen-go），才能开始安装grpc
 cd $GOPATH/src/
 go install google.golang.org/grpc
 ```
@@ -46,7 +48,7 @@ protoc 用于编译 protocolbuf (.proto文件) 和 protobuf 运行时。
 
 安装编译器最简单的方式是去[protobuf仓库地址](https://link.zhihu.com/?target=https%3A//github.com/protocolbuffers/protobuf/releases)下载预编译好的 protoc 二进制文件，仓库中可以找到每个平台对应的编译器二进制文件。
 
-解压后进入bin文件夹中，window下，找到可执行文件：protoc.exe 。然后将它放入到$PATH中，可以在环境变量中添加当前路径到path的方式实现。也可以复制这个exe到已有的path中。比如我就是直接将其复制到了go的安装目录的/bin下。
+解压后进入bin文件夹中，window下，找到可执行文件：protoc.exe 。然后将它放入到$GOROOT的bin中。
 
 linux下，
 
@@ -88,4 +90,10 @@ cd $GOPATH/src/
 go install github.com/golang/protobuf/protoc-gen-go/
 ```
 
-> 编译器插件 protoc-gen-go 将安装在默认位于GOPATH/bin下面，请务必将GOPATH/bin/protoc-gen-go拷贝到/usr/bin下面，或添加GOPATH/bin真实路径到PATH中。
+> 编译器插件 protoc-gen-go 将安装在默认位于GOPATH/bin下面，请务必将protoc-gen-go放到$GOROOT的bin中。
+
+
+
+
+
+protoc -I . --go_out=plugins=grpc:. ./QueryUser.proto
