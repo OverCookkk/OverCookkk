@@ -1,6 +1,6 @@
 ---
 title: go环境搭建
-#tags: [hexo建站,hexo部署,github部署,个人博客]      #添加的标签
+#tags: [hexo建站]      #添加的标签
 categories: 
   - GO
 description: 
