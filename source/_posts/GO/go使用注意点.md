@@ -33,7 +33,7 @@ func f3() (y int) {
 }
 func f4() (x int) {
 	defer func(x int) {
-		x++
+		x++	//改变的是函数中的x的副本
 	}(x)
 	return 5
 }
@@ -57,7 +57,7 @@ func calc(index string, a, b int) int {
 func main() {
 	x := 1
 	y := 2
-	defer calc("AA", x, calc("A", x, y))
+    defer calc("AA", x, calc("A", x, y))	//先算calc("A", x, y)，得到值付给calc("AA",x,   )，执行defer压栈，此时压栈传入的x是1，不是下面的10
 	x = 10
 	defer calc("BB", x, calc("B", x, y))
 	y = 20
