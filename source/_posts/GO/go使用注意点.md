@@ -151,3 +151,47 @@ Addresses: 0x40e020 0x40e020 0x40e020
 ```
 
 原因是：在每次迭代中，我们将 i 的地址追加到 out 切片中，但由于它是同一个变量，我们实际上追加的是相同的地址，该地址最终包含分配给 i 的最后一个值。
+
+
+
+6、for...range...拷贝副本
+
+```go
+func main() {
+	m := make(map[string]*student)
+	stus := []student{
+		{Name: "zhou", Age: 24},
+		{Name: "li", Age: 23},
+		{Name: "wang", Age: 22},
+	}
+	for _, stu := range stus {
+		m[stu.Name] = &stu
+	}
+
+	for k, v := range m {
+		fmt.Printf("k:%s v:%v", k, v)
+	}
+}
+```
+
+输出结果如下：
+
+```text
+k:zhou v:&{wang 22}
+k:li v:&{wang 22}
+k:wang v:&{wang 22}
+```
+
+原因：for range每次产生的k，v都是一个值拷贝，不是stus值对应的引用。
+
+详解：for中，第一次循环，变量stu被赋值，指向"zhou"，然后放到map中保存，第二次循环，变量stu的被重新赋值，改为指向“li”，这时map中的指向也跟着改变。
+
+解决方法：
+
+```go
+for _, stu := range stus{
+    a := stu	//每次重新定义一个新的变量a
+    m[stu.name] = &a
+}
+```
+
