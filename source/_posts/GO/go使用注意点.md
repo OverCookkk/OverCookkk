@@ -195,3 +195,44 @@ for _, stu := range stus{
 }
 ```
 
+
+
+
+
+7、常量
+
+`iota`是go语言的常量计数器，只能在常量的表达式中使用。
+
+**`iota`在const关键字出现时将被重置为0。const中每新增一行常量声明将使`iota`计数一次(iota可理解为const语句块中的行索引)。 **
+
+```go
+const (
+	a1 = iota //0
+	a2        //1
+	a3        //2
+)
+
+//使用_跳过某些值
+const (
+	b1 = iota //0
+	b2        //1
+	_         //该值被丢弃
+	b4        //3
+)
+
+//iota声明中间插队
+const (
+	c1 = iota //0
+	c2 = 100  //100
+	c3 = iota //2
+	c4        //3
+)
+const n5 = iota //0
+
+//多个iota定义在一行
+const (
+	d1, d2 = iota + 1, iota + 2 //1,2
+	d3, d4 = iota + 1, iota + 2 //2,3
+)
+```
+
