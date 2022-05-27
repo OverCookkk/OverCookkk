@@ -197,6 +197,44 @@ for _, stu := range stus{
 
 
 
+例子2：
+
+在循环迭代器变量上使用 goroutine
+
+```go
+values := []int{1, 2, 3, 4, 5}
+for _, val := range values {
+ go func() {
+  fmt.Println(val)
+ }()
+}
+
+time.Sleep(time.Second)
+```
+
+输出结果如下：
+
+```text
+5
+5
+4
+5
+5
+```
+
+原因：在闭包执行的匿名函数中，val的值由于在匿名函数中找不到，就去到函数外面找，由于外层的val值是切片values的一个临时变量，在for...range...执行时，不断被赋予新的值，所以，匿名函数中的val也会跟着改变。
+
+解决方法：
+
+```go
+values := []int{1, 2, 3, 4, 5}
+ for _, val := range values {
+  go func(val int) {	//通过把val传递进去，相当于拷贝了一个新的val给匿名函数使用
+   fmt.Println(val)
+  }(val)
+ }
+```
+
 
 
 7、常量
