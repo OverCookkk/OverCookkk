@@ -274,3 +274,49 @@ const (
 )
 ```
 
+
+
+8、float不支持按位或操作
+
+```go
+func main() {
+ var a, b = 1.0, 2.0
+ fmt.Println(a | b)
+}
+```
+
+float不支持按位或操作，编译不通过
+
+
+
+9、
+
+```go
+var nums1 []interface{}
+nums2 := []int{1, 2, 3}
+nums3 := append(nums1, nums2)
+fmt.Printf("%T\n", nums3)
+fmt.Println(len(nums3))
+```
+
+打印结果：
+
+```text
+[]interface {}
+1
+```
+
+原因：使用append，会把nums2当成一个空接口类型加到空接口切片nums1中。
+
+
+
+10、
+
+```text
+A. var x = nil
+B. var x interface{} = nil
+C. var x string = nil
+D. var x error = nil
+```
+
+nil 只能赋值给指针、chan、func、interface、map 或 slice 类型的变量
