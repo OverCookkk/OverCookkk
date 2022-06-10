@@ -41,7 +41,7 @@ http://127.0.0.1:9090/hello/lihua/sing
 
 ### URL参数
 
-URL参数可以通过DefaultQuery()或者Query()方法获取
+URL参数可以通过DefaultQuery()或者Query()方法获取，参数指的是URL中`?`后面携带的参数，例如：`/user/search?username=lihua&address=beijing`
 
 DefaultQuery()：返回默认值
 
@@ -139,13 +139,13 @@ func Post() {
 func rout() {
 	r := gin.Default()
 	// 路由组1，处理get请求
-	v1 := r.Group("/v1")
+	v1 := r.Group("/user")
 	{
 		v1.GET("/login", login)
 		v1.GET("submit", submit)
 	}
     // 路由组2，处理post请求
-	v2 := r.Group("/v2")
+	v2 := r.Group("/shop")
 	{
 		v2.POST("/login", login)
 		v2.POST("submit", submit)
@@ -341,11 +341,11 @@ func resp() {
 		c.JSON(200, gin.H{"message": "someJSON", "status": 200})
 	})
 
-	// 2、结构体响应
+	// 2、结构体响应（转换成json）
 	r.GET("/someStruct", func(c *gin.Context) {
 		var msg struct {
-			Name    string
-			Message string
+			Name    string `json:"name"`
+			Message string `json:"message"`
 			Number  int
 		}
 		msg.Name = "root"
@@ -451,6 +451,108 @@ func async_sync() {
 		log.Println("异步执行:" + c.Request.URL.Path)
 	})
 	r.Run()
+}
+```
+
+
+
+
+
+## gin中间件
+
+Gin框架允许开发者在处理请求的过程中，加入用户自己的钩子（Hook）函数。这个钩子函数就叫中间件，中间件适合处理一些公共的业务逻辑，比如登录认证、权限校验、数据分页、记录日志、耗时统计等。
+
+
+
+
+
+## 优雅关闭
+
+优雅关机就是服务端关机命令发出后不是立即关机，而是等待当前还在处理的请求全部处理完毕后再退出程序，是一种对客户端友好的关机方式。而执行`Ctrl+C`关闭服务端时，会强制结束进程导致正在访问的请求出现问题。
+
+Go 1.8版本之后， http.Server 内置的 [Shutdown()](https://golang.org/pkg/net/http/#Server.Shutdown) 方法就支持优雅地关机，具体示例如下：
+
+```go
+package main
+
+import (
+	"context"
+	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+
+	"github.com/gin-gonic/gin"
+)
+
+func main() {
+	router := gin.Default()
+	router.GET("/", func(c *gin.Context) {
+		time.Sleep(5 * time.Second)
+		c.String(http.StatusOK, "Welcome Gin Server")
+	})
+
+	srv := &http.Server{
+		Addr:    ":8080",
+		Handler: router, //把gin的路由传给http服务的handler
+	}
+
+	go func() {
+		// 开启一个goroutine启动服务
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("listen: %s\n", err)
+		}
+	}()
+
+	// 等待中断信号来优雅地关闭服务器，为关闭服务器操作设置一个5秒的超时
+	quit := make(chan os.Signal, 1) // 创建一个接收信号的通道
+	// kill 默认会发送 syscall.SIGTERM 信号
+	// kill -2 发送 syscall.SIGINT 信号，我们常用的Ctrl+C就是触发系统SIGINT信号
+	// kill -9 发送 syscall.SIGKILL 信号，但是不能被捕获，所以不需要添加它
+	// signal.Notify把收到的 syscall.SIGINT或syscall.SIGTERM 信号转发给quit
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)  // 此处不会阻塞
+	<-quit  // 阻塞在此，当接收到上述两种信号时才会往下执行
+	log.Println("Shutdown Server ...")
+	// 创建一个5秒超时的context
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	// 5秒内优雅关闭服务（将未处理完的请求处理完再关闭服务），超过5秒就超时退出
+	if err := srv.Shutdown(ctx); err != nil {
+		log.Fatal("Server Shutdown: ", err)
+	}
+
+	log.Println("Server exiting")
+}
+```
+
+
+
+使用gin本身代码实现优化关闭
+
+```go
+func main() {
+	r := gin.Default()
+
+	r.GET("/ping", func(context *gin.Context) {
+        time.Sleep(5 * time.Second)
+		context.JSON(http.StatusOK, gin.H{
+			"msg": "/pong",
+		})
+	})
+	go func() {
+		_ = r.Run(":8081")
+	}()
+
+	//等待中断信号，以优雅地关闭服务器
+	quit := make(chan os.Signal)
+	// 可以捕捉除了kill-9的所有中断信号
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+    // 阻塞
+	<-quit
+	fmt.Println("收到中断信号;优雅的退出...")
+	fmt.Println("退出完成")
 }
 ```
 

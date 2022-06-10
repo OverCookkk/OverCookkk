@@ -272,6 +272,13 @@ const (
 	d1, d2 = iota + 1, iota + 2 //1,2
 	d3, d4 = iota + 1, iota + 2 //2,3
 )
+
+const (
+ bit0, mask0 = 1 << iota, 1<<iota - 1	//1,0
+ bit1, mask1                            //2,1
+ _, _                                   
+ bit3, mask3                            //8,7
+)
 ```
 
 
