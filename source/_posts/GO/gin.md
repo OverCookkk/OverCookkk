@@ -454,3 +454,120 @@ func async_sync() {
 }
 ```
 
+
+
+## gin中间件
+
+- gin可以构建中间件，但它只对注册过的路由函数起作用
+- 对于分组路由，嵌套使用中间件，可以限定中间件的作用范围
+- 中间件分为全局中间件，单个路由中间件和群组中间件
+- gin中间件必须是一个gin.HandlerFunc类型
+
+
+
+### 全局中间件
+
+- 所有请求都经过此中间件
+
+```go
+func InitRouter() {
+	gin.SetMode(utils.AppNode)
+	// r := gin.Default()
+	r := gin.New()
+	r.Use(gin.Recovery())
+	r.Use(middleware.Logger())
+
+	auth := r.Group("api/v1")
+	auth.Use(middleware.JwtToken()) // 加入中间件
+	{
+		auth.PUT("user/:id", v1.EditUser)
+    }
+}
+```
+
+
+
+### Next()方法
+
+```go
+
+func main(){
+	router := gin.New()
+ 
+	mid1 := func(c * gin.Context){
+		fmt.Println("mid1 start")
+		c.Next()
+		fmt.Println("mid1 end")
+	}
+	mid2 := func(c * gin.Context){
+		fmt.Println("mid2 start")
+		//c.Abort()
+		c.Next()
+		fmt.Println("mid2 end")
+	}
+	mid3 := func(c * gin.Context){
+		fmt.Println("mid3 start")
+		c.Next()
+		fmt.Println("mid3 end")
+	}
+	router.Use(mid1,mid2,mid3)
+	router.GET("/",func(c * gin.Context){
+		fmt.Println("process get request")
+		c.JSON(http.StatusOK,"hello")
+	})
+	router.Run()
+```
+
+上述代码中使用了3个中间件（mid1,mid2,mid3），加上最后的路由处理即返回hello部分，共4个handles。
+
+如果注释掉3个中间件中的c.Next()，则执行情况如下：
+
+```text
+mid1 start
+mid1 end
+mid2 start
+mid2 end
+mid3 start
+mid3 end
+process get request
+```
+
+![go中间件_next1](https://raw.githubusercontent.com/OverCookkk/PicBed/master/blogImg/go%E4%B8%AD%E9%97%B4%E4%BB%B6_next1.png)
+
+
+
+如果仅在mid1中间件中使用c.Next()，则执行流程如下：
+
+```text
+mid1 start
+mid2 start
+mid2 end
+mid3 start
+mid3 end
+process get request
+mid1 end
+```
+
+![go中间件_next2](https://raw.githubusercontent.com/OverCookkk/PicBed/master/blogImg/go%E4%B8%AD%E9%97%B4%E4%BB%B6_next2.png)
+
+总结：
+
+最后的get路由处理函数可以理解为最后的中间件，在不是调用c.Abort()的情况下，所有的中间件都会被执行到。当某个中间件调用了c.Next(),则整个过程会产生嵌套关系。如果某个中间件调用了c.Abort()，则此中间件结束后会直接返回，后面的中间件均不会调用。
+
+
+
+### 局部中间件
+
+```go
+func InitRouter() {
+	gin.SetMode(utils.AppNode)
+	// r := gin.Default()
+	r := gin.New()
+	r.Use(gin.Recovery())
+	auth := r.Group("api/v1")
+	{
+		auth.PUT("user/:id", middleware.Logger(), v1.EditUser)	//局部中间件
+    }
+}
+```
+
