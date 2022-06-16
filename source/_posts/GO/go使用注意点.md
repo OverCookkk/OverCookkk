@@ -317,6 +317,22 @@ fmt.Println(len(nums3))
 
 
 
+拓展：把apend这句改成一下
+
+```go
+nums3 := append(nums3, nums2...)
+```
+
+会报错：
+
+```text
+cannot use nums2 (variable of type []int) as type []interface{} in argument to append
+```
+
+原因：`nums3 := append(nums3, nums2...)`本质是把`[]int`类型转换成`[]interface{}`类型，go不支持这样的转换。
+
+
+
 10、
 
 ```text
@@ -327,3 +343,25 @@ D. var x error = nil
 ```
 
 nil 只能赋值给指针、chan、func、interface、map 或 slice 类型的变量
+
+
+
+11、
+
+```go
+ m := [...]int{
+  'a': 1,
+  'b': 2,
+  'c': 3,
+ }
+ m['a'] = 3
+ fmt.Println(len(m))
+```
+
+输出：
+
+```text
+100
+```
+
+原因：定义并赋值一个int数组，使用`...`会根据初始值的个数自行推断数组的长度，而字符a、b、c对应的ASCII的值为97,98,99，所以数组m的最大值为m['c']，即m[99]。
