@@ -195,6 +195,8 @@ for _, stu := range stus{
 }
 ```
 
+或者map存储student的实体，而不是指针，如map[string]student，m[stu.Name] = stu，把stu复制了一份到map中。
+
 
 
 例子2：

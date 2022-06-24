@@ -16,7 +16,7 @@ description:
 
 
 
-## 搭建流程
+## 搭建方法一
 
 ### 测试镜像
 
@@ -42,5 +42,90 @@ docker run --rm \
     golang:alpine myTest
 ```
 - myTest是编译好的go程序。
-- `-v` Docker 挂载目录的参数。`$PWD` 代表当前执行命令的位置，`/srv/app` 是镜像容器中的目录。
-- `-w` Docker 设置容器运行时的工作主目录。这主要是为了配合上面的 `-v` 参数来执行当前目录下的 go 代码。
+- `-v` 将宿主主机目录挂在到容器里。`$PWD` 代表当前执行命令的位置，即宿主机目录，`/srv/app` 是镜像容器中的目录。
+- `-w` Docker 设置容器运行时的工作主目录。这主要是为了配合上面的 `-v` 参数来执行当前目录下的 go 代码
+
+注释：**将宿主机目录挂载到容器里 **   这句话可以理解成   把容器想成一个单独的系统，或者说电脑，而你的宿主机目录是一个U盘，挂载后，你往宿主机该目录里放文件，那么通过容器里对应目录便可以访问到此文件，不需要重新生成容器就可以在“容器外部”添加和修改某些文件。
+
+
+
+### 修改go环境变量
+
+Go 可以通过环境变量的方式来配置镜像，Docker 也支持设置容器运行时的环境变量。
+
+```shell
+#!/bin/bash
+
+docker run --rm \
+	-e GOPROXY=https://goproxy.cn \
+    -v $PWD:/srv/app \
+    -w /srv/app \
+    golang:alpine myTest
+```
+
+添加了一个 `-e` 参数，这是 Docker 用来设置容器运行时的环境变量，通过这个参数把后面 Go 的镜像家属配置带入运行的容器。
+
+
+
+
+
+## 搭建方法二
+
+编写Dockerfile文件，通过文件来创建镜像
+
+```dockerfile
+# 使用基础镜像来创建我们的镜像，后续的指令都基于该基础镜像环境运行
+FROM golang:alpine
+
+# 为我们的镜像设置必要的环境变量
+ENV GO111MODULE=on \
+    CGO_ENABLED=0 \
+    GOOS=linux \
+    GOARCH=amd64
+
+# 移动到容器中的工作目录：/build
+WORKDIR /build
+
+# 将代码复制到容器中
+COPY . .
+
+# 将我们的代码编译成二进制可执行文件http_mytest
+# 下载gin依赖包
+RUN go mod init build
+RUN go get -u github.com/gin-gonic/gin
+RUN go build -o http_mytest .
+
+# 移动到容器中用于存放生成的二进制文件的 /dist 目录
+WORKDIR /dist
+
+# 将二进制文件从 /build 目录复制到这里
+RUN cp /build/http_mytest .
+
+# 声明服务端口
+EXPOSE 8888
+
+# 运行镜像（启动容器）时运行的命令
+CMD ["/dist/http_mytest"]
+```
+
+### 构建镜像
+
+在项目目录下，执行下面的命令创建镜像，并指定镜像名称为`goweb_app`：
+
+```bash
+docker build . -t goweb_http
+```
+
+现在我们已经准备好了镜像，但是目前它什么也没做。我们接下来要做的是运行我们的镜像，以便它能够处理我们的请求。运行中的镜像称为容器。
+
+
+
+### 运行镜像
+
+执行下面的命令来运行镜像：
+
+```bash
+docker run --rm -p 8888:8888 goweb_http
+```
+
+标志位`-p`用来定义端口绑定。由于容器中的应用程序在端口8888上运行，我们将其绑定到主机端口也是8888。如果要绑定到另一个端口，则可以使用`-p $HOST_PORT:8888`。例如`-p 5000:8888`。
