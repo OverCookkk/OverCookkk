@@ -86,7 +86,7 @@ ENV GO111MODULE=on \
 # 移动到容器中的工作目录：/build
 WORKDIR /build
 
-# 将代码复制到容器中
+# 将本地代码复制到容器中
 COPY . .
 
 # 将我们的代码编译成二进制可执行文件http_mytest
@@ -108,13 +108,61 @@ EXPOSE 8888
 CMD ["/dist/http_mytest"]
 ```
 
+- FROM:文件的开始
+
+  FROM centos	#使用centos为系统，若没有则拉取
+
+- LABEL：相当于注释或者说明信息
+
+  LABEL version="1.0"
+
+  LABEL author="xxx"
+
+- RUN:执行命令，每执行一条RUN，就会多一层，**所有RUN使用&&连接多个命令一起执行**
+
+  RUN yum -y update
+
+- WORKDIR:在容器中进入或创建目录
+
+  WORKDIR /test
+
+- ADD：将本地文件添加到镜像里
+
+  ADD可以解压缩文件
+
+  ADD  hello /	# 把hello添加到镜像里的根目录
+
+  ADD xxx.tar.gz /	#添加并解压到根目录
+
+- COPY：将本地文件添加到镜像里
+
+  WORKDIR /root/test
+
+  COPY hello .	# /root/test/hello
+
+- ENV：
+
+  ENV MYSQL_VERSION 5.6	# 设置常量
+
+  RUN apt-get -y install mysql-server="{MYSQL_VERSION}"
+
+- CMD and ENTRYPOINT
+
+  若docker指定了其他命令，CMD会被忽略
+
+  若定义多个CMD，只会执行最后一个CMD
+
+
+
 ### 构建镜像
 
 在项目目录下，执行下面的命令创建镜像，并指定镜像名称为`goweb_app`：
 
 ```bash
-docker build . -t goweb_http
+docker build . -it goweb_http
 ```
+
+- -it：为容器重新分配一个伪输入终端，通常与 -i 同时使用，例如：假如Dockerfile里面是用centos作为基础镜像，使用-it，相当于进入了这个centos系统的终端下；
 
 现在我们已经准备好了镜像，但是目前它什么也没做。我们接下来要做的是运行我们的镜像，以便它能够处理我们的请求。运行中的镜像称为容器。
 
