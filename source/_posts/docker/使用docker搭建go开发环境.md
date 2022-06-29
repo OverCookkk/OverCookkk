@@ -148,8 +148,10 @@ CMD ["/dist/http_mytest"]
 
 - CMD and ENTRYPOINT
 
-  若docker指定了其他命令，CMD会被忽略
+  CMD ["python", "app.py"]
 
+  若docker指定了其他命令，CMD会被忽略
+  
   若定义多个CMD，只会执行最后一个CMD
 
 
@@ -173,7 +175,9 @@ docker build . -it goweb_http
 执行下面的命令来运行镜像：
 
 ```bash
-docker run --rm -p 8888:8888 goweb_http
+docker run --rm -d -p 8888:8888 goweb_http
 ```
+
+`-d`是让该容器运行在后台。
 
 标志位`-p`用来定义端口绑定。由于容器中的应用程序在端口8888上运行，我们将其绑定到主机端口也是8888。如果要绑定到另一个端口，则可以使用`-p $HOST_PORT:8888`。例如`-p 5000:8888`。
