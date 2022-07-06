@@ -83,7 +83,7 @@ type Map struct {
 
 type readOnly struct {
 	m       map[interface{}]*entry
-	amended bool // true if the dirty map contains some key not in m.
+	amended bool //是否修改， true if the dirty map contains some key not in m.
 }
 
 // An entry is a slot in the map corresponding to a particular key.
@@ -120,4 +120,66 @@ type entry struct {
 
 - read和map的关系，是一直在动态变化的，可能存在重叠，也可能是某一方为空；重叠的公共部分，由分为两种情况，nil和normal。
 
-- read和dirty之间是会互相转换的，在dirty中查找key对次数足够多的时候，sync.Map会把dirty直接作为read，即触发dirty=>read升级。同时在某些情况，也会出现read=>dirty的重塑。
+- read和dirty之间是会互相转换的，在dirty中查找key对次数足够多的时候，sync.Map会把dirty直接作为read，即触发dirty=>read升级。同时在某些情况，也会出现read=>dirty的重塑
+
+
+
+更多read和dirty转换的细节参考https://view.inews.qq.com/a/20220613A08UDG00
+
+
+
+### sync.Map基本使用
+
+1. Load：会从read和dirty两个中拿，如果read有且dirty中没有修改过，判断该条记录的状态如果是nil或者expunged（dirty中被删掉）则返回获取不到，其他状态返回read中的值；如果read中没有且dirty中修改，就加锁并从dirty中拿，并把missed字段+1,同步dirty到read,dirty=nil.
+
+```go
+func (m *Map) Load(key interface{}) (value interface{}, ok bool) {
+    read, _ := m.read.Load().(readOnly)
+    e, ok := read.m[key]
+    if !ok && read.amended {
+        m.mu.Lock()
+        // 可能锁等待的时候read中已经有该key了，所以做二次检查
+        read, _ = m.read.Load().(readOnly)
+        e, ok = read.m[key]
+        if !ok && read.amended {
+            e, ok = m.dirty[key]
+            // Regardless of whether the entry was present, record a miss: this key
+            // will take the slow path until the dirty map is promoted to the read
+            // map.
+            m.missLocked() //misses计数+1，且如果misses小于dirty的长度，dirty同步到read，dirty=nil
+        }
+        m.mu.Unlock()
+    }
+    if !ok {
+        return nil, false
+    }
+    return e.load() 
+}
+
+func (m *Map) missLocked() {
+	m.misses++
+	if m.misses < len(m.dirty) {
+		return
+	}
+	m.read.Store(readOnly{m: m.dirty})
+	m.dirty = nil
+	m.misses = 0
+}
+```
+
+2. Store：如果read中存在key且尝试更新成功（p不是expaunged状态，即在dirty中被删掉）,返回即可 否则加锁，并再次检查read中有没有该key,有可能加锁的时候read中已经被同步了该key了。 如果read中有key而之前没有，说明从dirty中同步过来一波，如果p是expunged,就把p设置成nil并且dirty中加入entry 如果read中没有dirty中有，直接存储 如果read中没有dirty中也没有，如果read和dirty中是一样的没有修改过，如果dirty为nil，同步read到dirty,存储到dirty,并且修改read的属性字段amend设置成修改过true。
+3. Read：如果read中不存在key且read和dirty中不一致，上锁，再次检查read,如果还是如此，删除dirty中的key 如果read中存在key,如果entry.p为nil或者expunged，返回false,如果不是，entry.p设置成nil，标记删除。
+
+
+
+### 总结
+
+- sync.Map中有read与dirty,操作dirty需要锁
+
+- 每次判断完read有无key之后进行进行加锁操作后还需要再次判断read有无key，防止在此时间内进行了从dirty同步到read操作，然后操作dirty
+
+- load场景中主要从read读，没有再从dirty读，同时会计数，如果数量超过一定量，数据从dirty同步到read
+
+- 其中有两处read和dirty互相同步的地方，在store场景主要存到dirty, 如果dirty中有直接更新，当dirty为nil的时候会把read中不是expunged状态的同步到dirty；dirty什么时候为nil呢，在load的时候从dirty中读的次数太多的时候会把dirty同步到read，并且dirty=nil
+
+- 删除为标记删除，把entry.p=nil来标记。
