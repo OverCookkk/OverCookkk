@@ -21,6 +21,10 @@
 
 <a href="https://go.dev/"><code><img height="20" src="./images/golang.png"></code></a>
 <a href="https://www.docker.com"><code><img height="20" src="./images/docker.png"></code></a>
+<a href="https://www.linux.org"><code><img height="20" src="./images/linux-original.svg"></code></a>
+<a href="https://www.mysql.com"><code><img height="20" src="./images/mysql-original.svg"></code></a>
+<a href="https://redis.io"><code><img height="20" src="./images/redis-original.svg"></code></a>
+<a href="https://git-scm.com"><code><img height="20" src="./images/git-scm-icon.svg"></code></a>
 
 ### Github 活跃度
 <!-- Snake Code Contribution Map 贪吃蛇代码贡献图 -->
