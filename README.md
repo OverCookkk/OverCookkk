@@ -11,7 +11,7 @@
  <img align="right" alt="GIF" src="./images/code.gif" width="430" height="100%" />
 
 
--   <a href="https://juejin.cn/user/1214304985296439/posts"><code><img height="20" width="50" src="./images/juejin.png"></code></a>：掘金优秀作者，发表了 30 篇技术文章，15万阅读。
+-   <a href="https://juejin.cn/user/2494164985191662/posts"><code><img height="20" width="50" src="./images/juejin.png"></code></a>：掘金主页。
 
 ### **技术栈:**
 
@@ -26,4 +26,7 @@
 </picture>
 
 ![OverCookkk's github stats](https://github-readme-stats.vercel.app/api?username=OverCookkk&show_icons=true&theme=cobalt)
-![](https://github-readme-stats.vercel.app/api/top-langs/?username=OverCookkk&layout=compact&langs_count=6)
+![](https://github-readme-stats.vercel.app/api/top-langs/?username=OverCookkk&layout=compact&langs_count=6&theme=cobalt)
+
+
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=OverCookkk&repo=ginblog&theme=tokyonight)](https://github.com/OverCookkk/ginblog)
