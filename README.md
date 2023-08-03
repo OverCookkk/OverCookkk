@@ -34,5 +34,7 @@
   <img alt="github contribution grid snake animation" src="https://raw.githubusercontent.com/OverCookkk/OverCookkk/output/github-contribution-grid-snake.svg">
 </picture>
 
+[![OverCookkk's github activity graph](https://github-readme-activity-graph.vercel.app/graph?username=OverCookkk&theme=rogue)](https://github.com/ashutosh00710/github-readme-activity-graph)
+
 ![OverCookkk's github stats](https://github-readme-stats.vercel.app/api?username=OverCookkk&show_icons=true&theme=cobalt)
 ![](https://github-readme-stats.vercel.app/api/top-langs/?username=OverCookkk&layout=compact&langs_count=6&theme=cobalt)
