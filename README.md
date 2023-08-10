@@ -3,7 +3,7 @@
   <!-- profile logo 个人资料徽标 -->
   <div align="center">
     <a href="https://OverCookkk.github.io/"><img src="https://img.shields.io/badge/Website-博客-blue" /></a>&emsp;
-    <a href="https://blog.csdn.net/weixin_50915462/"><img src="https://img.shields.io/badge/juejin-稀土掘金-green" /></a>&emsp;
+    <a href="https://juejin.cn/user/2494164985191662?utm_source=gold_browser_extension"><img src="https://img.shields.io/badge/juejin-稀土掘金-green" /></a>&emsp;
     <!-- visitor statistics logo 访客数统计徽标 -->
     <img src="https://komarev.com/ghpvc/?username=OverCookkk&label=Views&color=orange&style=flat" alt="访问量统计" />
   </div>
